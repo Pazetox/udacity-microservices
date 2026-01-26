@@ -1,0 +1,43 @@
+version: 2.1
+
+jobs:
+  build-and-push:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+
+      # Instalar Docker CLI dentro do container CircleCI
+      - setup_remote_docker:
+          version: 20.10.14
+
+      # Build das imagens
+      - run:
+          name: Build reverseproxy
+          command: docker build -t pazetox/udagram:reverseproxy ./udagram-reverseproxy
+      - run:
+          name: Build api-feed
+          command: docker build -t pazetox/udagram:api-feed ./udagram-api-feed
+      - run:
+          name: Build api-user
+          command: docker build -t pazetox/udagram:api-user ./udagram-api-user
+      - run:
+          name: Build frontend
+          command: docker build -t pazetox/udagram:frontend ./udagram-frontend
+
+      # Login no Docker Hub
+      - run:
+          name: Docker Hub login
+          command: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+      # Push das imagens
+      - run: docker push pazetox/udagram:reverseproxy
+      - run: docker push pazetox/udagram:api-feed
+      - run: docker push pazetox/udagram:api-user
+      - run: docker push pazetox/udagram:frontend
+
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build-and-push
