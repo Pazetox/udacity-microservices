@@ -4,37 +4,47 @@ jobs:
   build-and-push:
     docker:
       - image: cimg/base:stable
+    environment:
+      # Variáveis de ambiente usadas pelo Node.js e serviços
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: 99277032
+      POSTGRES_HOST: database-udacity-lab.clrjhrrjum3x.us-east-1.rds.amazonaws.com
+      POSTGRES_DB: postgres
+      AWS_BUCKET: bucket-udacity-lab
+      AWS_REGION: us-east-1
+      AWS_PROFILE: default
+      JWT_SECRET: testing
+      URL: http://localhost:8100
     steps:
       - checkout
 
-      # Instalar Docker CLI dentro do container CircleCI
-      - setup_remote_docker:
-          version: 20.10.14
+      # Configura Docker remoto (sem versão fixa)
+      - setup_remote_docker
 
       # Build das imagens
       - run:
           name: Build reverseproxy
-          command: docker build -t pazetox/udagram:reverseproxy ./udagram-reverseproxy
+          command: docker build -t pazetox/udacity-microservices:reverseproxy ./udagram-reverseproxy
       - run:
           name: Build api-feed
-          command: docker build -t pazetox/udagram:api-feed ./udagram-api-feed
+          command: docker build -t pazetox/udacity-microservices:api-feed ./udagram-api-feed
       - run:
           name: Build api-user
-          command: docker build -t pazetox/udagram:api-user ./udagram-api-user
+          command: docker build -t pazetox/udacity-microservices:api-user ./udagram-api-user
       - run:
           name: Build frontend
-          command: docker build -t pazetox/udagram:frontend ./udagram-frontend
+          command: docker build -t pazetox/udacity-microservices:frontend ./udagram-frontend
 
-      # Login no Docker Hub
+      # Login no Docker Hub (usa variáveis configuradas no painel do CircleCI)
       - run:
           name: Docker Hub login
           command: echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
       # Push das imagens
-      - run: docker push pazetox/udagram:reverseproxy
-      - run: docker push pazetox/udagram:api-feed
-      - run: docker push pazetox/udagram:api-user
-      - run: docker push pazetox/udagram:frontend
+      - run: docker push pazetox/udacity-microservices:reverseproxy
+      - run: docker push pazetox/udacity-microservices:api-feed
+      - run: docker push pazetox/udacity-microservices:api-user
+      - run: docker push pazetox/udacity-microservices:frontend
 
 workflows:
   version: 2
