@@ -1,5 +1,5 @@
 ### Build stage
-FROM node:16 AS build
+FROM node:20 AS build
 
 WORKDIR /usr/src/app
 
@@ -10,7 +10,7 @@ RUN npm install
 # Copiar código
 COPY . .
 
-# Build do Ionic (gera pasta www)
+# Build do Angular/Ionic
 RUN npm run build
 
 ### Run stage
