@@ -1,5 +1,5 @@
 # Usar imagem Node oficial
-FROM node:16
+FROM node:20 AS build
 
 WORKDIR /usr/src/app
 
