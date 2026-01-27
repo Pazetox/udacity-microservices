@@ -26,6 +26,8 @@ spec:
               cpu: "500m"
               memory: "512Mi"
           env:
+            - name: PORT
+              value: "8080"
             - name: POSTGRES_USERNAME
               value: "postgres"
             - name: POSTGRES_PASSWORD
