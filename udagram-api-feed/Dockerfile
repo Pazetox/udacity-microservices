@@ -1,13 +1,20 @@
+# Usar imagem Node oficial
 FROM node:16
-## Create app directory
+
 WORKDIR /usr/src/app
-## Install app dependencies
-## A wildcard is used to ensure both package.json AND package-lock.json are copied where available (npm@5+)
+
+# Copiar package.json e instalar dependências
 COPY package*.json ./
+RUN npm install
 
-RUN npm install --only=production
-
-## Bundle app source
+# Copiar código
 COPY . .
+
+# Compilar TypeScript durante o build
+RUN npm run build
+
+# Expor porta
 EXPOSE 8080
-CMD [ "npm", "run", "prod" ]
+
+# Rodar servidor já compilado
+CMD ["node", "./www/server.js"]
