@@ -15,5 +15,20 @@ spec:
       containers:
         - name: reverseproxy
           image: pazetox/udacity-microservices:reverseproxy
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reverseproxy
+spec:
+  selector:
+    app: reverseproxy
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080
+  type: NodePort
