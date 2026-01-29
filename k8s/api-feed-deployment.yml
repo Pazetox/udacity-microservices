@@ -31,7 +31,7 @@ spec:
             - name: POSTGRES_USERNAME
               value: "postgres"
             - name: POSTGRES_PASSWORD
-              value: "99277032"
+              value: "postgres"
             - name: POSTGRES_HOST
               value: "database-udacity-lab.clrjhrrjum3x.us-east-1.rds.amazonaws.com"
             - name: POSTGRES_DB
