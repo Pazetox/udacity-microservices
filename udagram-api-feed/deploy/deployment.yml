@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: feed-api
-        image: yesenarman/udagram-feed-api:latest
+        image: cleitonpazeto/udagram-feed-api:latest
         env:
         - name: AWS_BUCKET
           valueFrom:
